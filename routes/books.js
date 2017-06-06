@@ -7,7 +7,7 @@ const humps = require('humps');
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
-router.get('/books', function(req, res, next) {
+router.get('/books', (req, res, next) => {
   knex.select()
     .from('books')
     .orderBy('title')
@@ -19,10 +19,10 @@ router.get('/books', function(req, res, next) {
           if (key === 'cover_url') {
             let humpKey = humps.camelize(key);
             obj[humpKey] = result[i][key];
-          } else if (key == 'updated_at') {
+          } else if (key === 'updated_at') {
             let humpKey = humps.camelize(key);
             obj[humpKey] = result[i][key];
-          } else if (key == 'created_at') {
+          } else if (key === 'created_at') {
             let humpKey = humps.camelize(key);
             obj[humpKey] = result[i][key];
           } else {
@@ -38,7 +38,7 @@ router.get('/books', function(req, res, next) {
     });
 });
 
-router.get('/books/:id', function(req,res,next){
+router.get('/books/:id', (req,res,next) => {
   knex.select()
     .from('books')
     .orderBy('title')
@@ -49,10 +49,10 @@ router.get('/books/:id', function(req,res,next){
         if (key === 'cover_url') {
           let humpKey = humps.camelize(key);
           obj[humpKey] = result[0][key];
-        } else if (key == 'updated_at') {
+        } else if (key === 'updated_at') {
           let humpKey = humps.camelize(key);
           obj[humpKey] = result[0][key];
-        } else if (key == 'created_at') {
+        } else if (key === 'created_at') {
           let humpKey = humps.camelize(key);
           obj[humpKey] = result[0][key];
         } else {
@@ -65,7 +65,7 @@ router.get('/books/:id', function(req,res,next){
     });
 });
 
-router.post('/books', function(req,res,next){
+router.post('/books', (req,res,next) => {
   knex.max('id').from('books').then(function(result){
     req.body.id = result[0].max +1;
     knex('books').insert(req.body);
@@ -73,7 +73,7 @@ router.post('/books', function(req,res,next){
   });
 });
 
-router.patch('/books/:id', function(req,res,next){
+router.patch('/books/:id', (req,res,next) => {
   let obj = {};
   for(let key in req.body){
     if(key === 'coverUrl'){
@@ -94,7 +94,7 @@ router.patch('/books/:id', function(req,res,next){
   res.send(req.body);
 });
 
-router.delete('/books/:id', function(req,res,next){
+router.delete('/books/:id', (req,res,next) => {
   knex('books')
   .where('id', req.params.id).first()
   .then((result) => {
