@@ -13,14 +13,19 @@ router.use(bodyParser.json());
 
 router.get('/token', (req, res, next) => {
   let token = req.cookies.token;
-  console.log(token);
   if(!token){
     res.status(200);
     return res.send(false);
-  } else {
-    res.status(200);
-    return res.send(true);
   }
+  jwt.verify(token, process.env.JWT_KEY, function (err,decode) {
+    if(err){
+      console.log(err);
+      return res.send(false);
+    } else {
+      res.status(200);
+      return res.send(true);
+    }
+  });
 });
 
 router.post('/token', (req, res, next) => {
